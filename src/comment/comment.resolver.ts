@@ -1,27 +1,50 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CommentService } from './comment.service';
 import { Comment } from './comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
+import { User } from 'src/user/user.entity';
+import { Post } from 'src/post/post.entity';
 
-@Resolver(() => Comment)
+@Resolver((of) => Comment)
 export class CommentResolver {
   constructor(private readonly commentService: CommentService) {}
 
-  // @Mutation(() => Comment)
-  // createComment(@Args('createCommentInput') createCommentInput: CreateCommentInput) {
-  //   return this.commentService.create(createCommentInput);
-  // }
+  @ResolveField(() => User)
+  author(@Parent() comment: Comment): Promise<User> {
+    return this.commentService.getAuthor(comment.authorId);
+  }
 
-  // @Query(() => [Comment], { name: 'comment' })
-  // findAll() {
-  //   return this.commentService.findAll();
-  // }
+  @ResolveField(() => Post)
+  post(@Parent() comment: Comment): Promise<Post> {
+    return this.commentService.getPost(comment.postId);
+  }
 
-  // @Query(() => Comment, { name: 'comment' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.commentService.findOne(id);
-  // }
+  @Mutation(() => Comment)
+  createComment(
+    @Args('createCommentInput') createCommentInput: CreateCommentInput,
+  ): Promise<Comment> {
+    return this.commentService.create(createCommentInput);
+  }
+
+  @Query(() => [Comment])
+  comments() {
+    return this.commentService.findAll();
+  }
+
+  @Query(() => Comment)
+  findOne(@Args('id', { type: () => ID }) id: number) {
+    return this.commentService.findOne(id);
+  }
 
   // @Mutation(() => Comment)
   // updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {

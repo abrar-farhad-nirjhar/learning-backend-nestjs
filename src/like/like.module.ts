@@ -13,5 +13,6 @@ import { PostModule } from 'src/post/post.module';
     forwardRef(() => PostModule),
   ],
   providers: [LikeResolver, LikeService],
+  exports: [LikeService],
 })
 export class LikeModule {}

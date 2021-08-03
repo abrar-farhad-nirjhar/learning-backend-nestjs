@@ -10,12 +10,12 @@ type Like {
   post: Post!
 }
 
-type Post {
-  id: ID!
-  content: String!
-  isPublished: Boolean
-  authorId: ID!
-  author: User!
+type User {
+  id: Int!
+  name: String!
+  email: String!
+  password: String!
+  posts: [Post!]
   comments: [Comment!]
   likes: [Like!]
 }
@@ -29,12 +29,12 @@ type Comment {
   post: Post!
 }
 
-type User {
-  id: Int!
-  name: String!
-  email: String!
-  password: String!
-  posts: [Post!]
+type Post {
+  id: ID!
+  content: String!
+  isPublished: Boolean
+  authorId: ID!
+  author: User!
   comments: [Comment!]
   likes: [Like!]
 }
@@ -46,12 +46,15 @@ type Query {
   post(id: Float!): Post!
   likes: [Like!]!
   like(id: ID!): Like!
+  comments: [Comment!]!
+  findOne(id: ID!): Comment!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   createPost(createPostInput: CreatePostInput!): Post!
   createLike(createLikeInput: CreateLikeInput!): Like!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
 }
 
 input CreateUserInput {
@@ -67,5 +70,11 @@ input CreatePostInput {
 
 input CreateLikeInput {
   userId: ID!
+  postId: ID!
+}
+
+input CreateCommentInput {
+  content: String!
+  authorId: ID!
   postId: ID!
 }
