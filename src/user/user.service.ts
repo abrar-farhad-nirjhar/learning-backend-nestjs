@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PostService } from 'src/post/post.service';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user-input';
 import { User } from './user.entity';
@@ -7,7 +8,10 @@ import { User } from './user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @Inject(forwardRef(() => PostService))
+    private postService: PostService,
   ) {}
 
   async findOne(id: number): Promise<User> {
@@ -21,5 +25,9 @@ export class UserService {
   createUser(createUserInput: CreateUserInput): Promise<User> {
     const user = this.userRepository.create(createUserInput);
     return this.userRepository.save(user);
+  }
+
+  getPosts(authorId: number) {
+    return this.postService.postsByUsers(authorId);
   }
 }
