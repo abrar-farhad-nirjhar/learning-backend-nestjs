@@ -42,7 +42,7 @@ export class CommentResolver {
   }
 
   @Query(() => Comment)
-  findOne(@Args('id', { type: () => ID }) id: number) {
+  comment(@Args('id', { type: () => ID }) id: number) {
     return this.commentService.findOne(id);
   }
 

@@ -47,7 +47,7 @@ type Query {
   likes: [Like!]!
   like(id: ID!): Like!
   comments: [Comment!]!
-  findOne(id: ID!): Comment!
+  comment(id: ID!): Comment!
 }
 
 type Mutation {
