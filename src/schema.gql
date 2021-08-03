@@ -2,11 +2,31 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Like {
+  id: ID!
+  userId: ID!
+  user: User!
+  postId: ID!
+  post: Post!
+}
+
 type Post {
   id: ID!
   content: String!
   isPublished: Boolean!
+  authorId: ID!
   author: User!
+  comments: [Comment!]
+  likes: [Like!]
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  authorId: ID!
+  author: User!
+  postId: ID!
+  post: Post!
 }
 
 type User {
@@ -14,33 +34,21 @@ type User {
   name: String!
   email: String!
   password: String!
-  posts: [Post!]!
-}
-
-type Comment {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type Like {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  posts: [Post!]
+  comments: [Comment!]
+  likes: [Like!]
 }
 
 type Query {
   users: [User!]!
-  comment(id: Int!): Comment!
-  like(id: Int!): Like!
+  user(id: Float!): User!
+  posts: [Post!]!
+  post(id: Float!): Post!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  createComment(createCommentInput: CreateCommentInput!): Comment!
-  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
-  removeComment(id: Int!): Comment!
-  createLike(createLikeInput: CreateLikeInput!): Like!
-  updateLike(updateLikeInput: UpdateLikeInput!): Like!
-  removeLike(id: Int!): Like!
+  createPost(createPostInput: CreatePostInput!): Post!
 }
 
 input CreateUserInput {
@@ -49,24 +57,7 @@ input CreateUserInput {
   password: String!
 }
 
-input CreateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateLikeInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateLikeInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreatePostInput {
+  content: String!
+  authorId: Float!
 }

@@ -12,6 +12,11 @@ export class UserResolver {
     return this.userService.findAll();
   }
 
+  @Query(() => User)
+  user(@Args('id') id: number): Promise<User> {
+    return this.userService.findOne(id);
+  }
+
   @Mutation(() => User)
   createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
