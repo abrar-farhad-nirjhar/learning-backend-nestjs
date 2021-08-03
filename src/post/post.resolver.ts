@@ -6,6 +6,7 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
+import { Comment } from 'src/comment/comment.entity';
 import { Like } from 'src/like/like.entity';
 import { User } from 'src/user/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
@@ -33,6 +34,10 @@ export class PostResolver {
   @ResolveField(() => [Like])
   likes(@Parent() post: Post): Promise<Like[]> {
     return this.postService.getLikes(post.id);
+  }
+  @ResolveField(() => [Comment])
+  comments(@Parent() post: Post): Promise<Comment[]> {
+    return this.postService.getComments(post.id);
   }
 
   @Mutation(() => Post)

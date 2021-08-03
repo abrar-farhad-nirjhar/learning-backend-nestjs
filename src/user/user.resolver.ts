@@ -11,6 +11,7 @@ import { Like } from 'src/like/like.entity';
 import { CreateUserInput } from './dto/create-user-input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
+import { Comment } from 'src/comment/comment.entity';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -34,6 +35,11 @@ export class UserResolver {
   @ResolveField(() => [Like])
   likes(@Parent() user: User): Promise<Like[]> {
     return this.userService.getLikes(user.id);
+  }
+
+  @ResolveField(() => [Comment])
+  comments(@Parent() user: User): Promise<Comment[]> {
+    return this.userService.getComments(user.id);
   }
 
   @Mutation(() => User)

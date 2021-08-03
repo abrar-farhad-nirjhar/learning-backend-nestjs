@@ -1,5 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CommentService } from 'src/comment/comment.service';
 import { LikeService } from 'src/like/like.service';
 import { PostService } from 'src/post/post.service';
 import { Repository } from 'typeorm';
@@ -15,6 +16,8 @@ export class UserService {
     private postService: PostService,
     @Inject(forwardRef(() => LikeService))
     private likeService: LikeService,
+    @Inject(forwardRef(() => CommentService))
+    private commentService: CommentService,
   ) {}
 
   async findOne(id: number): Promise<User> {
@@ -36,5 +39,9 @@ export class UserService {
 
   getLikes(userId: number) {
     return this.likeService.likesByUser(userId);
+  }
+
+  getComments(authorId: number) {
+    return this.commentService.commentsByUser(authorId);
   }
 }
