@@ -44,11 +44,14 @@ type Query {
   user(id: Float!): User!
   posts: [Post!]!
   post(id: Float!): Post!
+  likes: [Like!]!
+  like(id: ID!): Like!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   createPost(createPostInput: CreatePostInput!): Post!
+  createLike(createLikeInput: CreateLikeInput!): Like!
 }
 
 input CreateUserInput {
@@ -60,4 +63,9 @@ input CreateUserInput {
 input CreatePostInput {
   content: String!
   authorId: Float!
+}
+
+input CreateLikeInput {
+  userId: ID!
+  postId: ID!
 }

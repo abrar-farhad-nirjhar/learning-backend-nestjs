@@ -1,27 +1,50 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { LikeService } from './like.service';
 import { Like } from './like.entity';
 import { CreateLikeInput } from './dto/create-like.input';
 import { UpdateLikeInput } from './dto/update-like.input';
+import { User } from 'src/user/user.entity';
+import { Post } from 'src/post/post.entity';
 
-@Resolver(() => Like)
+@Resolver((of) => Like)
 export class LikeResolver {
   constructor(private readonly likeService: LikeService) {}
 
-  // @Mutation(() => Like)
-  // createLike(@Args('createLikeInput') createLikeInput: CreateLikeInput) {
-  //   return this.likeService.create(createLikeInput);
-  // }
+  @ResolveField(() => User)
+  user(@Parent() like: Like): Promise<User> {
+    return this.likeService.getUser(like.userId);
+  }
 
-  // @Query(() => [Like], { name: 'like' })
-  // findAll() {
-  //   return this.likeService.findAll();
-  // }
+  @ResolveField(() => Post)
+  post(@Parent() like: Like): Promise<Post> {
+    return this.likeService.getPost(like.postId);
+  }
 
-  // @Query(() => Like, { name: 'like' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.likeService.findOne(id);
-  // }
+  @Mutation(() => Like)
+  createLike(
+    @Args('createLikeInput') createLikeInput: CreateLikeInput,
+  ): Promise<Like> {
+    return this.likeService.create(createLikeInput);
+  }
+
+  @Query(() => [Like])
+  likes() {
+    return this.likeService.findAll();
+  }
+
+  @Query(() => Like)
+  like(@Args('id', { type: () => ID }) id: number) {
+    return this.likeService.findOne(id);
+  }
 
   // @Mutation(() => Like)
   // updateLike(@Args('updateLikeInput') updateLikeInput: UpdateLikeInput) {
