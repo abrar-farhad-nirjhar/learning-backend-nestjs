@@ -20,7 +20,6 @@ export class User {
   email: string;
 
   @Column()
-  @Field()
   password: string;
 
   @OneToMany(() => Post, (post) => post.author)

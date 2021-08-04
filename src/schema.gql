@@ -14,7 +14,6 @@ type User {
   id: Int!
   name: String!
   email: String!
-  password: String!
   posts: [Post!]
   comments: [Comment!]
   likes: [Like!]
@@ -39,6 +38,10 @@ type Post {
   likes: [Like!]
 }
 
+type AuthJwtOutput {
+  jwt: String!
+}
+
 type Query {
   users: [User!]!
   user(id: Float!): User!
@@ -48,6 +51,12 @@ type Query {
   like(id: ID!): Like!
   comments: [Comment!]!
   comment(id: ID!): Comment!
+  login(loginUserInput: LoginUserInput!): AuthJwtOutput!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }
 
 type Mutation {

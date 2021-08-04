@@ -6,6 +6,7 @@ import { User } from './user.entity';
 import { PostModule } from 'src/post/post.module';
 import { LikeModule } from 'src/like/like.module';
 import { CommentModule } from 'src/comment/comment.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CommentModule } from 'src/comment/comment.module';
     forwardRef(() => PostModule),
     forwardRef(() => LikeModule),
     forwardRef(() => CommentModule),
+    forwardRef(() => AuthModule),
   ],
   providers: [UserService, UserResolver],
   exports: [UserService],

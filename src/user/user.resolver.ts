@@ -12,17 +12,22 @@ import { CreateUserInput } from './dto/create-user-input';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { Comment } from 'src/comment/comment.entity';
+import { Req, UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @Resolver((of) => User)
 export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Query(() => [User])
+  @UseGuards(GqlAuthGuard)
   users(): Promise<User[]> {
     return this.userService.findAll();
   }
 
   @Query(() => User)
+  @UseGuards(GqlAuthGuard)
   user(@Args('id') id: number): Promise<User> {
     return this.userService.findOne(id);
   }
