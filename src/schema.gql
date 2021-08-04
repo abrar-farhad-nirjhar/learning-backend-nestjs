@@ -63,8 +63,15 @@ input LoginUserInput {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   createPost(createPostInput: CreatePostInput!): Post!
+  publishPost(id: Float!): Post!
+  unPublishPost(id: Float!): Post!
+  updatePost(content: String!, id: Float!): Post!
+  removePost(id: Float!): String!
   createLike(createLikeInput: CreateLikeInput!): Like!
+  removeLike(id: Float!): String!
   createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(content: String!, id: Float!): Comment!
+  removeComment(id: ID!): String!
 }
 
 input CreateUserInput {

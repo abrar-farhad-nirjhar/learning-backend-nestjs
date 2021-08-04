@@ -35,6 +35,29 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
+  async publishPost(id): Promise<Post> {
+    const post = await this.postRepository.findOne(id);
+    post.isPublished = true;
+    return this.postRepository.save(post);
+  }
+
+  async unPublishPost(id): Promise<Post> {
+    const post = await this.postRepository.findOne(id);
+    post.isPublished = false;
+    return this.postRepository.save(post);
+  }
+
+  async deletePost(id) {
+    const post = await this.postRepository.findOne(id);
+    await this.postRepository.remove(post);
+  }
+
+  async updatePost(id, content): Promise<Post> {
+    const post = await this.postRepository.findOne(id);
+    post.content = content;
+    return this.postRepository.save(post);
+  }
+
   getUser(authorId: number): Promise<User> {
     return this.userService.findOne(authorId);
   }

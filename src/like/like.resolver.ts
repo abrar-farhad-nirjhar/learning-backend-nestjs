@@ -61,13 +61,21 @@ export class LikeResolver {
     return this.likeService.findOne(id);
   }
 
-  // @Mutation(() => Like)
-  // updateLike(@Args('updateLikeInput') updateLikeInput: UpdateLikeInput) {
-  //   return this.likeService.update(updateLikeInput.id, updateLikeInput);
-  // }
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => String)
+  async removeLike(
+    @CurrentUser() user,
+    @Args('id') id: number,
+  ): Promise<String> {
+    const like = await this.likeService.findOne(id);
+    const post = await this.likeService.getPost(like.postId);
+    if (post.authorId !== user.id) {
+      throw new BadRequestException(
+        'Only author of the post can remove a like',
+      );
+    }
+    await this.likeService.removeLike(id);
 
-  // @Mutation(() => Like)
-  // removeLike(@Args('id', { type: () => Int }) id: number) {
-  //   return this.likeService.remove(id);
-  // }
+    return 'Like has been removed';
+  }
 }

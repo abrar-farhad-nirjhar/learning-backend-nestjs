@@ -31,6 +31,11 @@ export class LikeService {
     return this.likeRepository.findOne(id);
   }
 
+  async removeLike(id: number) {
+    const like = await this.likeRepository.findOne(id);
+    await this.likeRepository.remove(like);
+  }
+
   getPost(postId: number): Promise<Post> {
     return this.postService.findOne(postId);
   }

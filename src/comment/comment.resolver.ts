@@ -59,13 +59,33 @@ export class CommentResolver {
     return this.commentService.findOne(id);
   }
 
-  // @Mutation(() => Comment)
-  // updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {
-  //   return this.commentService.update(updateCommentInput.id, updateCommentInput);
-  // }
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Comment)
+  async updateComment(
+    @CurrentUser() user,
+    @Args('id') id: number,
+    @Args('content') content: string,
+  ): Promise<Comment> {
+    const comment = await this.commentService.findOne(id);
+    if (comment.authorId !== user.id) {
+      throw new BadRequestException('Only author can update a comment.');
+    }
 
-  // @Mutation(() => Comment)
-  // removeComment(@Args('id', { type: () => Int }) id: number) {
-  //   return this.commentService.remove(id);
-  // }
+    return this.commentService.updateComment(id, content);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => String)
+  async removeComment(
+    @CurrentUser() user,
+    @Args('id', { type: () => ID }) id: number,
+  ) {
+    const comment = await this.commentService.findOne(id);
+    const post = await this.commentService.getPost(comment.postId);
+    if (post.authorId !== user.id) {
+      throw new BadRequestException('Only the author can remove a comment.');
+    }
+    await this.commentService.removeComment(id);
+    return 'Comment has been removed';
+  }
 }

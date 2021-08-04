@@ -42,11 +42,14 @@ export class CommentService {
     return this.commentRepository.find({ where: { authorId } });
   }
 
-  update(id: number, updateCommentInput: UpdateCommentInput) {
-    return `This action updates a #${id} comment`;
+  async updateComment(id: number, content: string) {
+    const comment = await this.commentRepository.findOne(id);
+    comment.content = content;
+    return this.commentRepository.save(comment);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async removeComment(id: number) {
+    const comment = await this.commentRepository.findOne(id);
+    await this.commentRepository.remove(comment);
   }
 }
