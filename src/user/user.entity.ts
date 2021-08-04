@@ -22,6 +22,10 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: false })
+  @Field((type) => Boolean, { nullable: true, defaultValue: false })
+  isAdmin: Boolean;
+
   @OneToMany(() => Post, (post) => post.author)
   @Field((type) => [Post], { nullable: true })
   posts: Post[];

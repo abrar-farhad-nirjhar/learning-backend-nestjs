@@ -14,6 +14,7 @@ type User {
   id: Int!
   name: String!
   email: String!
+  isAdmin: Boolean
   posts: [Post!]
   comments: [Comment!]
   likes: [Like!]
@@ -74,16 +75,13 @@ input CreateUserInput {
 
 input CreatePostInput {
   content: String!
-  authorId: Float!
 }
 
 input CreateLikeInput {
-  userId: ID!
   postId: ID!
 }
 
 input CreateCommentInput {
   content: String!
-  authorId: ID!
   postId: ID!
 }

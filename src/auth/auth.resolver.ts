@@ -15,12 +15,11 @@ export class AuthResolver {
 
   @Query(() => AuthJwtOutput)
   async login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
-    console.log(loginUserInput.email);
     const user: any = await this.userService.login(loginUserInput.email);
     if (!user) {
       throw new BadRequestException('Invalid Credentials');
     }
-    console.log(user.password);
+
     if (!(await bcrypt.compare(loginUserInput.password, user.password))) {
       throw new BadRequestException('Invalid Credentials');
     }

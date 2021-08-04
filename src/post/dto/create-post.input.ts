@@ -4,7 +4,5 @@ import { Field, InputType } from '@nestjs/graphql';
 export class CreatePostInput {
   @Field()
   content: string;
-
-  @Field()
-  authorId: number;
+  authorId?: number;
 }
