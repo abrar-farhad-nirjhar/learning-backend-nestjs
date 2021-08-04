@@ -21,7 +21,7 @@ export class Post {
   @Field()
   content: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: false })
   @Field((type) => Boolean, { nullable: true, defaultValue: false })
   isPublished: Boolean;
 
