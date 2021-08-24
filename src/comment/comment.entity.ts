@@ -18,7 +18,7 @@ export class Comment {
   @Field((type) => ID)
   authorId: number;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
   @Field((type) => User)
   author: User;
 
@@ -26,7 +26,7 @@ export class Comment {
   @Field((type) => ID)
   postId: number;
 
-  @ManyToOne(() => Post, (post) => post.comments)
+  @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
   @Field((type) => Post)
   post: Post;
 }

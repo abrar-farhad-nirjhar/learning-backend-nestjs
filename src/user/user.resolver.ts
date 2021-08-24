@@ -47,10 +47,19 @@ export class UserResolver {
     return this.userService.getComments(user.id);
   }
 
+
   @Mutation(() => User)
   createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<User> {
     return this.userService.createUser(createUserInput);
   }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => User)
+  currentUser( @CurrentUser() user,): Promise<User> {
+    return this.userService.findOne(user.id);
+  }
+
+
 }

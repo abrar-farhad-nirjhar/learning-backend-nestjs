@@ -20,7 +20,7 @@ export class Like {
   @Field((type) => ID)
   userId: number;
 
-  @ManyToOne(() => User, (user) => user.likes)
+  @ManyToOne(() => User, (user) => user.likes, { onDelete: 'CASCADE' })
   @Field((type) => User)
   user: User;
 
@@ -28,7 +28,7 @@ export class Like {
   @Field((type) => ID)
   postId: number;
 
-  @ManyToOne(() => Post, (post) => post.likes)
+  @ManyToOne(() => Post, (post) => post.likes, { onDelete: 'CASCADE' })
   @Field((type) => Post)
   post: Post;
 }

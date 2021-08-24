@@ -46,7 +46,9 @@ type AuthJwtOutput {
 type Query {
   users: [User!]!
   user(id: Float!): User!
+  currentUser: User!
   posts: [Post!]!
+  unPublishedPosts: [Post!]!
   post(id: Float!): Post!
   likes: [Like!]!
   like(id: ID!): Like!

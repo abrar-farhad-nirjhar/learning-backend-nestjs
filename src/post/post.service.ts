@@ -20,14 +20,18 @@ export class PostService {
     private likeService: LikeService,
     @Inject(forwardRef(() => CommentService))
     private commentService: CommentService,
-  ) {}
+  ) { }
 
   async findOne(id: number): Promise<Post> {
     return this.postRepository.findOne(id);
   }
 
   async findAll(): Promise<Post[]> {
-    return this.postRepository.find();
+    return this.postRepository.find({ isPublished: true });
+  }
+
+  async findAllUnpublished(id: any): Promise<Post[]> {
+    return this.postRepository.find({ isPublished: false, authorId: id });
   }
 
   createPost(CreatePostInput: CreatePostInput): Promise<Post> {

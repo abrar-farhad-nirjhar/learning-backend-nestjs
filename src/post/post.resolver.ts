@@ -18,12 +18,18 @@ import { PostService } from './post.service';
 
 @Resolver((of) => Post)
 export class PostResolver {
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService) { }
 
   @UseGuards(GqlAuthGuard)
   @Query(() => [Post])
   posts(): Promise<Post[]> {
     return this.postService.findAll();
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => [Post])
+  unPublishedPosts(@CurrentUser() user,): Promise<Post[]> {
+    return this.postService.findAllUnpublished(user.id);
   }
 
   @UseGuards(GqlAuthGuard)
